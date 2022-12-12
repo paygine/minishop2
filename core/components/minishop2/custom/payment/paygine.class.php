@@ -187,7 +187,7 @@ class Paygine extends msPaymentHandler implements msPaymentInterface {
         if ($signature !== $response['signature'])
             throw new Exception($this->modx->getOption('setting_ms2_payment_paygine_invalid_signature'));
 
-        if ($response['type'] == 'PURCHASE' && $response['state'] == 'APPROVED'){
+        if (($response['type'] == 'PURCHASE' || $response['type'] == 'PURCHASE_BY_QR' || $response['type'] == 'AUTHORIZE') && $response['state'] == 'APPROVED'){
             @$this->modx->context->key = 'mgr';
             $miniShop2->changeOrderStatus($order->get('id'), 2); // Setting status "paid"
             return true;
